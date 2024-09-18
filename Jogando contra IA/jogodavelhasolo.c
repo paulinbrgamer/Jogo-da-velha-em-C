@@ -48,6 +48,7 @@ for(int i=0;i<3;i++)
 char mostrar(char matriz[3][3])
 {
     printf("-----------VELHA-BET-----------\n\n" );
+        printf("VALENDO R$30,00 NO PIX PAPAI!!!!!\n\n" );
     printf("         1   2   3\n\n");
     for(int i=0;i<3;i++)
     {

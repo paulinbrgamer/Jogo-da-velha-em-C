@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
-
+#include <ctype.h>
+#include <stdbool.h> 
 int  aleatorio()
 {
     int numero;
@@ -46,7 +47,7 @@ for(int i=0;i<3;i++)
 }
 char mostrar(char matriz[3][3])
 {
-    printf("-------JOGO DA VELHA--------\n\n" );
+    printf("-----------VELHA-BET-----------\n\n" );
     printf("         1   2   3\n\n");
     for(int i=0;i<3;i++)
     {
@@ -107,18 +108,47 @@ int main()
         //jogador 1
         if (vez == 'O')
         {
-          
+
         //TRATAMENTO DE BUG PARA O JOGADOR NAO JOGAR EM UM LUGAR QUE JA FOI JOGADO
-        //CASO O USUARIO DIGITE UMA LETRA DIFERENTE OU UM NUMERO MAIOR QUE 3
-        while (linhap1 >3 || colunap1 !='A' &&colunap1 !='B' && colunap1 !='C'|| colunap1 == 'A' && tela[0][linhap1-1] != ' '|| colunap1 == 'B' && tela[1][linhap1-1] != ' '|| colunap1 == 'C' && tela[2][linhap1-1] != ' ')
-        {
-            system("cls");
-            mostrar(tela);
-            printf("\n    VEZ DE [ O ] = ");
-            scanf("%c%d",&colunap1,&linhap1);
-            getchar();
-           
-        }
+        //CASO O USUARIO DIGITE UMA LETRA DIFERENTE OU UM NUMERO MAIOR QUE 3 ou no primeiro valor digite um numero ou no segundo valor digite uma letra
+         while (1) {
+                system("cls");
+                mostrar(tela);
+                printf("\n    VEZ DE [ O ] = ");
+
+                // Lê a entrada e verifica se é válida
+                if (scanf(" %c%d", &colunap1, &linhap1) != 2) {
+                    // Se a entrada não for composta por uma letra e um número, limpa o buffer e avisa o usuário
+                    printf("Entrada inválida! Tente novamente (Ex: A1, B2...)\n");
+                    while (getchar() != '\n');  // Limpa o buffer
+                    continue;
+                }
+
+                // Converter coluna para maiúscula
+                colunap1 = toupper(colunap1);
+
+                // Verifica se a linha está no intervalo certo (1 a 3)
+                if (linhap1 < 1 || linhap1 > 3) {
+                    printf("Linha inválida! Digite um número entre 1 e 3.\n");
+                    continue;
+                }
+
+                // Verifica se a coluna está no intervalo certo (A, B ou C)
+                if (colunap1 != 'A' && colunap1 != 'B' && colunap1 != 'C') {
+                    printf("Coluna inválida! Digite A, B ou C.\n");
+                    continue;
+                }
+
+                // Verifica se o local já está ocupado
+                int colunaIndex = colunap1 - 'A';  // Converte A, B, C para 0, 1, 2
+                if (tela[colunaIndex][linhap1 - 1] != ' ') {
+                    printf("Posição já ocupada! Escolha outra.\n");
+                    continue;
+                }
+
+                // Se todas as verificações passarem, a entrada é válida
+                break;
+            }
         //JOGADA DO JOGADOR DEPOIS DE FILTRAR TODOS OS POSSIVEIS ERROS
         if (colunap1 == 'A')
         {
@@ -167,7 +197,7 @@ int main()
             system("cls");
             mostrar(tela);
             printf("\n    VEZ DE [ X ]");
-            Sleep(500);
+            Sleep(800);
         //nao deixar o jogador vencer na roadada atual
         //VERIFICAR EM SEQUENCIA OOX
     
